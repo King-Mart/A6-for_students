@@ -301,102 +301,102 @@ class Canvas:
 
 
 "TEST"
-print(Rectangle(Point(), Point(1,1), "red"))  # Rectangle(Point(0,0),Point(1,1),'red')
-r1 = Rectangle(Point(), Point(1,1), "red")
-print(r1.get_color())  # 'red'
-print(r1.get_bottom_left())  # Point(0,0)
-print(r1.get_top_right())  # Point(1,1)
-r1.reset_color("blue")
-print(r1.get_color())  # 'blue'
-print(r1)  # Rectangle(Point(0,0),Point(1,1),'blue')
-r1.move(2,3)
-print(r1)  # Rectangle(Point(2,3),Point(3,4),'blue')
-print(r1)  # I am a blue rectangle with bottom left corner at (2, 3) and top right corner at (3, 4).
+# print(Rectangle(Point(), Point(1,1), "red"))  # Rectangle(Point(0,0),Point(1,1),'red')
+# r1 = Rectangle(Point(), Point(1,1), "red")
+# print(r1.get_color())  # 'red'
+# print(r1.get_bottom_left())  # Point(0,0)
+# print(r1.get_top_right())  # Point(1,1)
+# r1.reset_color("blue")
+# print(r1.get_color())  # 'blue'
+# print(r1)  # Rectangle(Point(0,0),Point(1,1),'blue')
+# r1.move(2,3)
+# print(r1)  # Rectangle(Point(2,3),Point(3,4),'blue')
+# print(r1)  # I am a blue rectangle with bottom left corner at (2, 3) and top right corner at (3, 4).
 
-r2 = eval(repr(r1))
-print(r2)  # Rectangle(Point(2,3),Point(3,4),'blue')
-print(r1 is r2)  # False
-print(r1 == r2)  # True
-r3 = Rectangle(Point(), Point(2,1), "red")
-print(r3.get_perimeter())  # 6
-r4 = Rectangle(Point(1,1), Point(2,2.5), "blue")
-print(r4.get_area())  # 1.5
-r5 = Rectangle(Point(1,1), Point(2,2.5), "blue")
-print(r4 == r5)  # True
-print(r4 is r5)  # False
-r6 = Rectangle(Point(1,1), Point(2,2.5), "red")
-print(r5 == r6)  # False
+# r2 = eval(repr(r1))
+# print(r2)  # Rectangle(Point(2,3),Point(3,4),'blue')
+# print(r1 is r2)  # False
+# print(r1 == r2)  # True
+# r3 = Rectangle(Point(), Point(2,1), "red")
+# print(r3.get_perimeter())  # 6
+# r4 = Rectangle(Point(1,1), Point(2,2.5), "blue")
+# print(r4.get_area())  # 1.5
+# r5 = Rectangle(Point(1,1), Point(2,2.5), "blue")
+# print(r4 == r5)  # True
+# print(r4 is r5)  # False
+# r6 = Rectangle(Point(1,1), Point(2,2.5), "red")
+# print(r5 == r6)  # False
 
-r = Rectangle(Point(1,1), Point(2,5), "blue")
-print(r.contains(1.5,1))  # True
-print(r.contains(2,2))  # True
-print(r.contains(0,0))  # False
+# r = Rectangle(Point(1,1), Point(2,5), "blue")
+# print(r.contains(1.5,1))  # True
+# print(r.contains(2,2))  # True
+# print(r.contains(0,0))  # False
 
-r1 = Rectangle(Point(1,1), Point(2,2), "blue")
-r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
-r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
-print(r3)  # I am a red rectangle with bottom left corner at (1.5, 0) and top right corner at (1.7, 3).
+# r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+# r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
+# r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
+# print(r3)  # I am a red rectangle with bottom left corner at (1.5, 0) and top right corner at (1.7, 3).
 
-print(r1.intersects(r2))  # False
-print(r2.intersects(r1))  # False
-print(r1.intersects(r3))  # True
-print(r2.intersects(r3))  # False
+# print(r1.intersects(r2))  # False
+# print(r2.intersects(r1))  # False
+# print(r1.intersects(r3))  # True
+# print(r2.intersects(r3))  # False
 
-c = Canvas()
-print(len(c))  # 0
-r1 = Rectangle(Point(1,1), Point(2,2), "blue")
-r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
-r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
-c.add_one_rectangle(r1)
-c.add_one_rectangle(r2)
-c.add_one_rectangle(r3)
-c.add_one_rectangle(Rectangle(Point(0,0), Point(100,100), "orange"))
-print(len(c))  # 4
-print(c)  # Canvas([Rectangle(Point(1,1),Point(2,2),'blue'), Rectangle(Point(2,2.5),Point(3,3),'blue'), Rectangle(Point(1.5,0),Point(1.7,3),'red'), Rectangle(Point(0,0),Point(100,100),'orange')])
+# c = Canvas()
+# print(len(c))  # 0
+# r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+# r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
+# r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
+# c.add_one_rectangle(r1)
+# c.add_one_rectangle(r2)
+# c.add_one_rectangle(r3)
+# c.add_one_rectangle(Rectangle(Point(0,0), Point(100,100), "orange"))
+# print(len(c))  # 4
+# print(c)  # Canvas([Rectangle(Point(1,1),Point(2,2),'blue'), Rectangle(Point(2,2.5),Point(3,3),'blue'), Rectangle(Point(1.5,0),Point(1.7,3),'red'), Rectangle(Point(0,0),Point(100,100),'orange')])
 
-print(c.count_same_color("blue"))  # 2
-print(c.count_same_color("red"))  # 1
-print(c.count_same_color("purple"))  # 0
+# print(c.count_same_color("blue"))  # 2
+# print(c.count_same_color("red"))  # 1
+# print(c.count_same_color("purple"))  # 0
 
-c = Canvas()
-r1 = Rectangle(Point(1,1), Point(2,2), "blue")
-r2 = Rectangle(Point(1,1), Point(4,4), "blue")
-r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
-c.add_one_rectangle(r1)
-c.add_one_rectangle(r2)
-c.add_one_rectangle(r3)
-print(c.total_perimeter())  # 20
+# c = Canvas()
+# r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+# r2 = Rectangle(Point(1,1), Point(4,4), "blue")
+# r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
+# c.add_one_rectangle(r1)
+# c.add_one_rectangle(r2)
+# c.add_one_rectangle(r3)
+# print(c.total_perimeter())  # 20
 
-c = Canvas()
-r1 = Rectangle(Point(1,1), Point(2,2), "blue")
-r2 = Rectangle(Point(1,1), Point(4,4), "blue")
-r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
-r4 = Rectangle(Point(0,-100), Point(1,100), "yellow")
-c.add_one_rectangle(r1)
-c.add_one_rectangle(r2)
-c.add_one_rectangle(r3)
-c.add_one_rectangle(r4)
-print(c.min_enclosing_rectangle())  # Rectangle(Point(-2,-100),Point(4,100),'red')
+# c = Canvas()
+# r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+# r2 = Rectangle(Point(1,1), Point(4,4), "blue")
+# r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
+# r4 = Rectangle(Point(0,-100), Point(1,100), "yellow")
+# c.add_one_rectangle(r1)
+# c.add_one_rectangle(r2)
+# c.add_one_rectangle(r3)
+# c.add_one_rectangle(r4)
+# print(c.min_enclosing_rectangle())  # Rectangle(Point(-2,-100),Point(4,100),'red')
 
-c = Canvas()
-r1 = Rectangle(Point(1,1), Point(2,2), "blue")
-r2 = Rectangle(Point(1.5,1.5), Point(4,4), "blue")
-r3 = Rectangle(Point(-2,-2), Point(2,1.5), "blue")
-r4 = Rectangle(Point(0,-100), Point(1.5,100), "yellow")
-c.add_one_rectangle(r1)
-c.add_one_rectangle(r2)
-c.add_one_rectangle(r3)
-c.add_one_rectangle(r4)
-print(c.common_point())  # True
+# c = Canvas()
+# r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+# r2 = Rectangle(Point(1.5,1.5), Point(4,4), "blue")
+# r3 = Rectangle(Point(-2,-2), Point(2,1.5), "blue")
+# r4 = Rectangle(Point(0,-100), Point(1.5,100), "yellow")
+# c.add_one_rectangle(r1)
+# c.add_one_rectangle(r2)
+# c.add_one_rectangle(r3)
+# c.add_one_rectangle(r4)
+# print(c.common_point())  # True
 
-c = Canvas()
-r1 = Rectangle(Point(-2,-2), Point(-1,2), "blue")
-r2 = Rectangle(Point(-2,-2), Point(2,-1), "blue")
-r3 = Rectangle(Point(1,-2), Point(2,2), "blue")
-r4 = Rectangle(Point(-2,1), Point(2,2), "blue")
-c.add_one_rectangle(r1)
-c.add_one_rectangle(r2)
-c.add_one_rectangle(r3)
-c.add_one_rectangle(r4)
-print(c.common_point())  # False
+# c = Canvas()
+# r1 = Rectangle(Point(-2,-2), Point(-1,2), "blue")
+# r2 = Rectangle(Point(-2,-2), Point(2,-1), "blue")
+# r3 = Rectangle(Point(1,-2), Point(2,2), "blue")
+# r4 = Rectangle(Point(-2,1), Point(2,2), "blue")
+# c.add_one_rectangle(r1)
+# c.add_one_rectangle(r2)
+# c.add_one_rectangle(r3)
+# c.add_one_rectangle(r4)
+# print(c.common_point())  # False
 
