@@ -61,7 +61,7 @@ class Rectangle:
         self.color = color.lower()
         self.width = self.topRight.x - self.bottomLeft.x
         self.height = self.topRight.y - self.bottomLeft.x
-        if self.width <= 0 or self.height <= 0:
+        if self.width < 0 or self.height < 0:
             raise ValueError
     
     @staticmethod
@@ -110,7 +110,7 @@ class Rectangle:
         Returns:
             int | float: The perimeter of the rectangle
         """
-        return 2(self.width+self.height)
+        return 2*(self.width+self.height)
     def get_area(self) -> int | float:
         """Get the area of the rectangle
 
@@ -136,7 +136,7 @@ class Rectangle:
         Returns:
             bool: True if they do intersect, false otherwise
         """
-        return (self.bottomLeft.x < other.topRight.x) & (self.bottomLeft.y < other.topRight.y) & (self.topRight.x > other.bottomLeft.x) & (self.topRight.y > other.bottomLeft.y)
+        return (self.bottomLeft.x <= other.topRight.x) & (self.bottomLeft.y <= other.topRight.y) & (self.topRight.x >= other.bottomLeft.x) & (self.topRight.y >= other.bottomLeft.y)
     def intersection(self, other : 'Rectangle') -> 'Rectangle':
         """Gives the are of the rectangles that intersects (overlap)
 
@@ -147,7 +147,7 @@ class Rectangle:
             Rectangle: A null rectangle if the intersection is an illegal rectangle, the interseciton otherwise
         """
         try:
-            return Rectangle(Point(max(self.bottomLeft.x, other.bottomLeft.x), max(self.bottomLeft.y, other.bottomLeft.y), Point(min(self.topRight.x, other.topRight.x), min(self.topRight.y, other.topRight.y))))
+            return Rectangle(Point(max(self.bottomLeft.x, other.bottomLeft.x), max(self.bottomLeft.y, other.bottomLeft.y)), Point(min(self.topRight.x, other.topRight.x), min(self.topRight.y, other.topRight.y)))
         except ValueError as e:
             return NullRectangle()
     def contains(self, X : int | float, Y : int | float) -> bool:
@@ -187,7 +187,7 @@ class Rectangle:
             bool: True if every attribute is the same EDIT: if the repr is the same
         """
         # return self.bottomLeft == other.bottomLeft and self.topRight == other.topRight and self.color == other.color
-        return repr(self) == (repr(other) if other.type() != str else other)
+        return repr(self) == (repr(other) if type(other) != str else other)
 class NullRectangle(Rectangle):
     def __init__(self) -> None:
         """Create a NullRectangle, a rectangle that is not valid"""
@@ -196,6 +196,8 @@ class NullRectangle(Rectangle):
         self.color = None
         self.width = None
         self.height = None
+    def __repr__(self) -> str: return f"Impossible rectagle"
+    def __str__(self) -> str: return self.__repr__()
 
 class Canvas:
     
@@ -208,7 +210,7 @@ class Canvas:
         """
         self.minBottomLeft : Point 
         self.maxTopRight : Point 
-        self.lenght : int = 0
+        self.length : int = 0
         self.totalPerimeter : int | float= 0
         self.Rectangles : list[Rectangle] = []
     def addFirstRectangle(self, rectangle : Rectangle) -> None:
@@ -219,8 +221,8 @@ class Canvas:
         """
         self.length += 1
         self.totalPerimeter += rectangle.get_perimeter()
-        self.minBottomLeft = rectangle.bottomLeft
-        self.maxTopRight = rectangle.topRight
+        self.minBottomLeft = Point(rectangle.bottomLeft.x, rectangle.bottomLeft.y)
+        self.maxTopRight = Point(rectangle.topRight.x, rectangle.topRight.y)
         self.Rectangles.append(rectangle)
     def add_one_rectangle(self, rectangle : Rectangle) -> None:
         """Adds a new rectangle to the canvas, delegates if it is the first one
@@ -228,7 +230,7 @@ class Canvas:
         Args:
             rectangle (Rectangle): The rectangle to be added
         """
-        if self.lenght == 0:
+        if self.length == 0:
             self.addFirstRectangle(rectangle)
         else:
             self.length += 1
@@ -239,7 +241,7 @@ class Canvas:
             if self.maxTopRight.y < rectangle.topRight.y: self.maxTopRight.y = rectangle.topRight.y
             self.Rectangles.append(rectangle)
     def count_same_color(self, color : str) -> int:
-        """Returns the number of rectangles of a given color in thw canva
+        """Returns the number of rectangles of a given color in the canva
 
         Args:
             color (str): The color
@@ -249,6 +251,7 @@ class Canvas:
         """
         count = 0
         for rectangle in self.Rectangles: count += (1 if rectangle.color == color else 0)
+        return count
     
     def total_perimeter(self) -> int | float:
         """Returns the total perimeter of all rectangles in the canvas
@@ -256,27 +259,144 @@ class Canvas:
         Returns:
             int | float: The total perimeter
         """
-        return self.total_perimeter
+        return self.totalPerimeter
 
-    def min_enclosing_rectangle(self):
-        if self.lenght == 0: return NullRectangle()
+    def min_enclosing_rectangle(self) -> Rectangle:
+        """Returns the rectangle that encloses all the rectangles in the canvas
+
+        Returns:
+            Rectangle: The minimum enclosing rectangle
+        """
+        if self.length == 0: return NullRectangle()
         else: return Rectangle(self.minBottomLeft, self.maxTopRight, "black")
     
-    def common_point(self):
+    def common_point(self) -> bool:
         """Returns True if all rectangles in the canvas intersect in a point
 
         Returns:
             bool: True if all rectangles intersect in a point, False otherwise
         """
-        if self.lenght == 0 : return False
+        if self.length == 0 : return False
         intersection : Rectangle = self.Rectangles[0]
         for rectangle in self.Rectangles[1:]:
             intersection = intersection.intersection(rectangle)
-            if intersection == NullRectangle():
-                return False
+            if intersection == NullRectangle(): print(intersection); return False
         return True
 
+    """
+    Returns the number of rectangles in the canvas
+
+    Returns:
+        int: The number of rectangles
+    """
+    def __len__(self) -> int: return self.length
+
+    """
+    Returns a string representing the canvas
+
+    Returns:
+        str: A string that represents the canvas
+    """
+    def __repr__(self) -> str: return f"Canvas({[repr(x) for x in self.Rectangles]})"
 
 
-    def __len__(self) -> int:
-        return self.lenght
+"TEST"
+print(Rectangle(Point(), Point(1,1), "red"))  # Rectangle(Point(0,0),Point(1,1),'red')
+r1 = Rectangle(Point(), Point(1,1), "red")
+print(r1.get_color())  # 'red'
+print(r1.get_bottom_left())  # Point(0,0)
+print(r1.get_top_right())  # Point(1,1)
+r1.reset_color("blue")
+print(r1.get_color())  # 'blue'
+print(r1)  # Rectangle(Point(0,0),Point(1,1),'blue')
+r1.move(2,3)
+print(r1)  # Rectangle(Point(2,3),Point(3,4),'blue')
+print(r1)  # I am a blue rectangle with bottom left corner at (2, 3) and top right corner at (3, 4).
+
+r2 = eval(repr(r1))
+print(r2)  # Rectangle(Point(2,3),Point(3,4),'blue')
+print(r1 is r2)  # False
+print(r1 == r2)  # True
+r3 = Rectangle(Point(), Point(2,1), "red")
+print(r3.get_perimeter())  # 6
+r4 = Rectangle(Point(1,1), Point(2,2.5), "blue")
+print(r4.get_area())  # 1.5
+r5 = Rectangle(Point(1,1), Point(2,2.5), "blue")
+print(r4 == r5)  # True
+print(r4 is r5)  # False
+r6 = Rectangle(Point(1,1), Point(2,2.5), "red")
+print(r5 == r6)  # False
+
+r = Rectangle(Point(1,1), Point(2,5), "blue")
+print(r.contains(1.5,1))  # True
+print(r.contains(2,2))  # True
+print(r.contains(0,0))  # False
+
+r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
+r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
+print(r3)  # I am a red rectangle with bottom left corner at (1.5, 0) and top right corner at (1.7, 3).
+
+print(r1.intersects(r2))  # False
+print(r2.intersects(r1))  # False
+print(r1.intersects(r3))  # True
+print(r2.intersects(r3))  # False
+
+c = Canvas()
+print(len(c))  # 0
+r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+r2 = Rectangle(Point(2,2.5), Point(3,3), "blue")
+r3 = Rectangle(Point(1.5,0), Point(1.7,3), "red")
+c.add_one_rectangle(r1)
+c.add_one_rectangle(r2)
+c.add_one_rectangle(r3)
+c.add_one_rectangle(Rectangle(Point(0,0), Point(100,100), "orange"))
+print(len(c))  # 4
+print(c)  # Canvas([Rectangle(Point(1,1),Point(2,2),'blue'), Rectangle(Point(2,2.5),Point(3,3),'blue'), Rectangle(Point(1.5,0),Point(1.7,3),'red'), Rectangle(Point(0,0),Point(100,100),'orange')])
+
+print(c.count_same_color("blue"))  # 2
+print(c.count_same_color("red"))  # 1
+print(c.count_same_color("purple"))  # 0
+
+c = Canvas()
+r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+r2 = Rectangle(Point(1,1), Point(4,4), "blue")
+r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
+c.add_one_rectangle(r1)
+c.add_one_rectangle(r2)
+c.add_one_rectangle(r3)
+print(c.total_perimeter())  # 20
+
+c = Canvas()
+r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+r2 = Rectangle(Point(1,1), Point(4,4), "blue")
+r3 = Rectangle(Point(-2,-2), Point(-1,-1), "blue")
+r4 = Rectangle(Point(0,-100), Point(1,100), "yellow")
+c.add_one_rectangle(r1)
+c.add_one_rectangle(r2)
+c.add_one_rectangle(r3)
+c.add_one_rectangle(r4)
+print(c.min_enclosing_rectangle())  # Rectangle(Point(-2,-100),Point(4,100),'red')
+
+c = Canvas()
+r1 = Rectangle(Point(1,1), Point(2,2), "blue")
+r2 = Rectangle(Point(1.5,1.5), Point(4,4), "blue")
+r3 = Rectangle(Point(-2,-2), Point(2,1.5), "blue")
+r4 = Rectangle(Point(0,-100), Point(1.5,100), "yellow")
+c.add_one_rectangle(r1)
+c.add_one_rectangle(r2)
+c.add_one_rectangle(r3)
+c.add_one_rectangle(r4)
+print(c.common_point())  # True
+
+c = Canvas()
+r1 = Rectangle(Point(-2,-2), Point(-1,2), "blue")
+r2 = Rectangle(Point(-2,-2), Point(2,-1), "blue")
+r3 = Rectangle(Point(1,-2), Point(2,2), "blue")
+r4 = Rectangle(Point(-2,1), Point(2,2), "blue")
+c.add_one_rectangle(r1)
+c.add_one_rectangle(r2)
+c.add_one_rectangle(r3)
+c.add_one_rectangle(r4)
+print(c.common_point())  # False
+
